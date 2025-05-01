@@ -23,4 +23,4 @@ const deleteUserByEmail = async (email) => {
 };
 
 // Delete the user with email 'div@gmail.com'
-deleteUserByEmail("divyagar123@gmail.com");
+deleteUserByEmail("divyagar123@gmail.com"); 

@@ -1,111 +1,289 @@
-/* frontend/src/components/FileList.css */
 .file-list-container {
   font-family: "Poppins", sans-serif;
   background: linear-gradient(to right, #2a5298, #4a7043);
-  padding: 40px 20px;
   min-height: 100vh;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #fff;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.file-list-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10.01%);
+  background-size: 20px 20px;
+  opacity: 0.3;
+  animation: particleMove 20s linear infinite;
+}
+
+@keyframes particleMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-1000px); }
 }
 
 .file-list-container h2 {
-  font-size: 2rem;
   color: #e6f0e6;
+  font-size: 2rem;
+  font-weight: 700;
   margin-bottom: 20px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .filter-container {
+  display: flex;
+  gap: 10px;
   margin-bottom: 20px;
+  max-width: 600px;
+  width: 100%;
 }
 
 .filter-container input {
-  padding: 8px;
-  font-size: 1rem;
-  border-radius: 4px;
+  padding: 10px;
+  border-radius: 8px;
   border: none;
-  margin-right: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #e0e0e0;
+  font-size: 1rem;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.filter-container input::placeholder {
+  color: #a8d5a2;
+}
+
+.filter-container input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .filter-btn {
-  padding: 8px 16px;
-  background: #a8d5a2;
+  padding: 10px 20px;
+  background-color: #ffcc00;
   color: #2a5298;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
 
 .filter-btn:hover {
-  background: #8cc084;
+  background-color: #ffbb00;
+  transform: translateY(-2px);
 }
 
-.file-list {
-  list-style: none;
-  padding: 0;
-  width: 100%;
-  max-width: 800px;
-}
-
-.file-item {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.file-item a {
-  color: #a8d5a2;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.file-item a:hover {
-  text-decoration: underline;
-}
-
-.file-item span {
-  font-size: 0.9rem;
-  color: #e0e0e0;
-  margin-left: 10px;
-}
-
-.file-item button {
-  padding: 5px 10px;
-  margin-left: 10px;
-  background: #ff9999;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.file-item button:hover {
-  background: #ff6666;
+.loading-message, .error-message, .no-files {
+  font-size: 1rem;
+  margin: 20px 0;
 }
 
 .error-message {
-  color: #ff9999;
-  margin: 10px 0;
+  color: #FF6384;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.no-files {
+  color: #e0e0e0;
+}
+
+.file-table {
+  width: 100%;
+  max-width: 1200px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+}
+
+.file-table-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px 12px 0 0;
+  font-weight: 600;
+  color: #e6f0e6;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.file-table-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  align-items: center;
+  transition: background 0.3s ease-in-out;
+}
+
+.file-table-row:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.file-table-row-edit {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  align-items: center;
+}
+
+.file-name a {
+  color: #a8d5a2;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.file-name a:hover {
+  color: #ffcc00;
+}
+
+.file-email {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.file-date {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn, .delete-btn, .save-btn, .cancel-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.edit-btn {
+  background-color: #36A2EB;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background-color: #2a8ac7;
+  transform: translateY(-2px);
+}
+
+.delete-btn {
+  background-color: #FF6384;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background-color: #e55a75;
+  transform: translateY(-2px);
+}
+
+.save-btn {
+  background-color: #5cb85c;
+  color: #fff;
+}
+
+.save-btn:hover {
+  background-color: #4cae4c;
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  background-color: #b0b0b0;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background-color: #9a9a9a;
+  transform: translateY(-2px);
 }
 
 .refresh-btn {
   padding: 10px 20px;
-  background: #a8d5a2;
+  background-color: #ffcc00;
   color: #2a5298;
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
   margin-top: 20px;
 }
 
 .refresh-btn:hover {
-  background: #8cc084;
+  background-color: #ffbb00;
+  transform: translateY(-2px);
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .file-table-header, .file-table-row {
+    grid-template-columns: 2fr 1fr 1fr;
+    font-size: 0.9rem;
+  }
+
+  .file-table-header span:nth-child(2), .file-table-row .file-email {
+    display: none; /* Hide email on smaller screens */
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filter-container input, .filter-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .file-list-container {
+    padding: 20px 10px;
+  }
+
+  .file-table-header, .file-table-row {
+    grid-template-columns: 2fr 1fr;
+    font-size: 0.8rem;
+  }
+
+  .file-table-header span:nth-child(3), .file-table-row .file-date {
+    display: none; /* Hide date on very small screens */
+  }
+
+  .file-table-row-edit {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .edit-btn, .delete-btn, .save-btn, .cancel-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .refresh-btn {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+  }
 }
